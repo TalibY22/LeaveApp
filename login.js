@@ -2,10 +2,6 @@ import React, { useState } from 'react'
 import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 
 
-// contact me :)
-// instagram: must_ait6
-// email : mustapha.aitigunaoun@gmail.com
-
 export default function LoginForm() {
     const [click,setClick] = useState(false);
     const {username,setUsername}=  useState("");
