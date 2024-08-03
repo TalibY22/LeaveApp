@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 export default function LoginForm() {
-  // Setting of states 
   const [click, setClick] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
 
   const handleLogin = async () => {
-    console.log("hy")
+    console.log("Attempting login..."); // Debugging log
     try {
       const response = await fetch('http://127.0.0.1:8000/api/login', {
         method: 'POST',
@@ -25,12 +25,12 @@ export default function LoginForm() {
       const result = await response.json();
 
       if (response.ok) {
-        
         Alert.alert('Login Successful', 'Welcome!');
         setToken(result.token); 
-        console.log(token)
+        await SecureStore.setItemAsync('Auth_token', result.token);
+        const storedToken = await SecureStore.getItemAsync('Auth_token');
+        console.log("Stored Token: ", storedToken); // Debugging log
       } else {
-        
         Alert.alert('Login Failed', result.message || 'Something went wrong');
       }
     } catch (error) {
@@ -61,8 +61,6 @@ export default function LoginForm() {
           autoCapitalize='none'
         />
       </View>
-      <Button title="LOGIN" onPress={handleLogin} />
-
       <View style={styles.buttonView}>
         <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>LOGIN</Text>
@@ -92,10 +90,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     paddingTop: 70,
-  },
-  image: {
-    height: 160,
-    width: 170
   },
   title: {
     fontSize: 30,
@@ -158,30 +152,4 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 50
   },
-  optionsText: {
-    textAlign: "center",
-    paddingVertical: 10,
-    color: "gray",
-    fontSize: 13,
-    marginBottom: 6
-  },
-  mediaIcons: {
-    flexDirection: "row",
-    gap: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 23
-  },
-  icons: {
-    width: 40,
-    height: 40,
-  },
-  footerText: {
-    textAlign: "center",
-    color: "gray",
-  },
-  signup: {
-    color: "red",
-    fontSize: 13
-  }
 });
