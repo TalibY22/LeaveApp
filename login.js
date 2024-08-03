@@ -9,8 +9,9 @@ export default function LoginForm() {
   const [token, setToken] = useState("");
 
   const handleLogin = async () => {
+    console.log("hy")
     try {
-      const response = await fetch('https://your-api-url.com/login', {
+      const response = await fetch('http://127.0.0.1:8000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,11 +25,12 @@ export default function LoginForm() {
       const result = await response.json();
 
       if (response.ok) {
-        // Handle successful login, e.g., navigate to the next screen
+        
         Alert.alert('Login Successful', 'Welcome!');
-        setToken(result.token); // Assuming the API returns a token
+        setToken(result.token); 
+        console.log(token)
       } else {
-        // Handle errors, e.g., show an error message
+        
         Alert.alert('Login Failed', result.message || 'Something went wrong');
       }
     } catch (error) {
@@ -59,7 +61,8 @@ export default function LoginForm() {
           autoCapitalize='none'
         />
       </View>
-      
+      <Button title="LOGIN" onPress={handleLogin} />
+
       <View style={styles.buttonView}>
         <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>LOGIN</Text>
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "black",
     height: 45,
+    gap: 15,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
